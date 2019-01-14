@@ -1,15 +1,11 @@
-import time
-
 import redis
-from flask import Flask
-from flask import jsonify
-
+from flask import Flask, jsonify
 from flask_cors import CORS
-
 
 app = Flask(__name__)
 CORS(app)
 cache = redis.Redis(host='redis', port=6379)
+
 
 @app.route('/health')
 def health():
