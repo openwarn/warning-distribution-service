@@ -14,7 +14,7 @@ function jasminify(err, done) {
 
 describe('app', () => {
     const STATUS_CODE_OK = 200;
-    const TEST_PORT = 7001;
+    const TEST_PORT = 7002;
     let expressApp = express();
 
     beforeAll(() => {

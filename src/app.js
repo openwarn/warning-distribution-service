@@ -1,71 +1,41 @@
 
 const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
 const http = require('http');
-const socketIO = require('socket.io');
 const requestLogger = require('morgan');
 const ConfigurationService = require('./services/configuration.service');
 const kafka = require('kafka-node');
+const Producer = kafka.Producer;
+const KafkaClient = kafka.KafkaClient;
 const environment = require('process').env;
 
-const indexRouterFactory = require('./routes/index');
+const alertRouterFactory = require('./routes/alert');
 const healthRouterFactory = require('./routes/health');
 const defaults = require('./defaults');
 
-// Get configuration / environment variables
-const configurationService = new ConfigurationService(defaults, environment);
-const config = configurationService.loadConfiguration();
-
-function createKafkaListenerFunction(socket) {
-  return () => {
-    socket.emit('message', 'jackbird')
-    console.log('kafka listener called');
-  };
-}
-
-function initKafkaConsumer() {
-  console.info('Consumer is connecting to kafka at:', config.KAFKA_HOST);
-  const kafkaClient = new kafka.KafkaClient({kafkaHost: config.KAFKA_HOST});
-  const kafkaConsumer = new kafka.Consumer(
-    kafkaClient,
-    [
-        { 
-          topic: 'birds' 
-        }
-    ],
-    {
-        autoCommit: false
-    }    
-  );
-
-  return kafkaConsumer;
-}
-
-function initWebsocket(server, kafkaConsumer) {
-  const io = socketIO(server);
-  // A client has connected to our websocket
-  io.on('connection', (socket) => {
-    // TODO: Authentication https://socket.io/docs/client-api/
-    console.log('a user connected');
-    const listenerFunction = createKafkaListenerFunction(socket);
-    kafkaConsumer.on('message', listenerFunction);
-
-    socket.on('disconnect', () => {
-      console.log('user disconnected');
-      kafkaConsumer.removeListener("message", listenerFunction);
-    });
+function initKafkaProducer(config) {
+  console.info('Producer is connecting to kafka at:', config.KAFKA_HOST);
+  const kafkaClient = new KafkaClient({kafkaHost: config.KAFKA_HOST});
   
-    socket.on('birds', (bird) => {
-      console.log('bird arrived', bird);
-    });
-
-  });
-
-  return io;
+  return new Producer(kafkaClient);
 }
 
+function buildConfig(defaultConfig, env) {
+  const configurationService = new ConfigurationService(defaultConfig, env);
+
+  return configurationService.loadConfiguration();
+}
+
+// eslint-disable-next-line max-statements
 function startApp() {
+  const config = buildConfig(defaults, environment);
 
   const app = express();
+  app.use(bodyParser.json());
+  app.use(cors())
+  // FIXME: App mit helmet absichern
+
   const server = http.Server(app);
 
   server.listen(config.PORT, () => {
@@ -74,11 +44,10 @@ function startApp() {
 
   app.use(requestLogger('dev'));
 
-  const kafkaConsumer = initKafkaConsumer();
-  const io = initWebsocket(server, kafkaConsumer);
+  const kafkaProducer = initKafkaProducer(config);
 
   // Routes
-  app.use('/', indexRouterFactory(io));
+  app.use('/api/v1/alerts', alertRouterFactory(kafkaProducer));
   app.use('/health', healthRouterFactory());
 
   return app;
