@@ -1,7 +1,6 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const cors = require('cors');
 const http = require('http');
 const requestLogger = require('morgan');
 const ConfigurationService = require('./services/configuration.service');
@@ -9,6 +8,9 @@ const kafka = require('kafka-node');
 const Producer = kafka.Producer;
 const KafkaClient = kafka.KafkaClient;
 const environment = require('process').env;
+// Security
+const helmet = require('helmet');
+const cors = require('cors');
 
 const alertRouterFactory = require('./routes/alert');
 const healthRouterFactory = require('./routes/health');
@@ -33,8 +35,9 @@ function startApp() {
 
   const app = express();
   app.use(bodyParser.json());
-  app.use(cors())
-  // FIXME: App mit helmet absichern
+  app.use(helmet());
+  app.use(helmet.noCache());
+  app.use(cors());
 
   const server = http.Server(app);
 
