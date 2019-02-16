@@ -34,7 +34,9 @@ function startApp() {
   const config = buildConfig(defaults, environment);
 
   const app = express();
-  app.use(bodyParser.json());
+  app.use(bodyParser.json({
+    limit: config.MAX_XML_SIZE
+  }));
   app.use(helmet());
   app.use(helmet.noCache());
   app.use(cors());
