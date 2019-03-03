@@ -1,4 +1,9 @@
 class AlertReference {
+    /**
+     * @param {string} identifier 
+     * @param {string} senderId 
+     * @param {Date} sent 
+     */
     constructor(identifier, senderId, sent) {
         // NOTE: Use builder to create an alert reference
         this.identifier = identifier;
@@ -27,10 +32,10 @@ class AlertReferenceBuilder {
     }
 
     /**
-     * @param {DateTime} sentAt 
+     * @param {DateTime} sent
      */
-    sent(sentAt) {
-        this.reference.sentAt = sentAt;
+    sent(sent) {
+        this.reference.sent = sent;
         return this;
     }
 

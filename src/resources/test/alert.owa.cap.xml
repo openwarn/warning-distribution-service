@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<alert xmlns="urn:oasis:names:tc:emergency:cap:1.2">
+    <identifier>
+        EXAMPLE-OW-f46bdd9e-146f-4337-abbe-ce1be88d4a0b
+    </identifier>
+    <sender>alerts@example.org</sender>
+    <sent>2019-02-25T06:46:16-00:00</sent>
+    <msgType>Alert</msgType>
+    <status>Actual</status>
+    <scope>Public</scope>
+    <code>profile:CAP-OW:1.0</code>
+    <info>
+        <category>Geo</category>
+        <event>Erdbeben</event>
+        <eventCode>
+            <valueName>profile:CAP-OW:Event:1.0</valueName>
+            <value>earthquake</value>
+        </eventCode>
+        <senderName>OpenWarn-Kontrollzentrum</senderName>
+        <urgency>Expected</urgency>
+        <severity>Severe</severity>
+        <certainty>Likely</certainty>
+        <area>
+            <areaDesc>Hamburg und Umgebung</areaDesc>
+            <circle>53.534240, 9.997065 100</circle>
+        </area>
+        <language>de-DE</language>
+        <description>
+            Ein Erdbeben der Stärke 6.3 in Hamburg.
+        </description>
+    </info>
+    <info>
+        <category>Geo</category>
+        <event>Earthquake</event>
+        <eventCode>
+            <valueName>profile:CAP-OW:Event:1.0</valueName>
+            <value>earthquake</value>
+        </eventCode>
+        <parameter>
+            <valueName>profile:CAP-OW:AutoTranslated</valueName>
+            <value>yes</value>
+        </parameter>
+        <senderName>OpenWarn - Control Center</senderName>
+        <urgency>Expected</urgency>
+        <severity>Severe</severity>
+        <certainty>Likely</certainty>
+        <area>
+            <areaDesc>Hamburg and surrounding area</areaDesc>
+            <circle>53.534240, 9.997065 100</circle>
+        </area>
+        <language>en-US</language>
+        <description>
+          An earthquake measuring 6.3 on the Richter scale in Hamburg
+        </description>
+    </info>
+</alert>

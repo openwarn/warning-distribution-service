@@ -11,6 +11,9 @@ class CapAlert {
         return new AlertBuilder();
     }
 
+    /**
+     * @returns {AlertReference}
+     */
     asReference() {
         return AlertReference.builder()
         .identifier(this.identifier)
@@ -26,6 +29,9 @@ class CapAlert {
     asError(errorMessage) {
         return CapAlert.builder()
         .msgType('Error')
+        .status('Actual')
+        .scope('Public')
+        .originatedAt(new Date())
         .note(errorMessage)
         .senderId('OW-Internal')
         .reference(this.asReference())
@@ -33,12 +39,14 @@ class CapAlert {
     }
 
     /**
-     * @param {string} errorMessage 
-     * @returns {CapAlert} Error Alert
+     * @returns {CapAlert} Ack Alert
      */
     asAck() {
         return CapAlert.builder()
         .msgType('Ack')
+        .status('Actual')
+        .scope('Public')
+        .originatedAt(new Date())
         .senderId('OW-Internal')
         .reference(this.asReference())
         .build();
