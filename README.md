@@ -14,7 +14,7 @@ It was created as part of the master thesis called
 
 ## Installation
 
-Prerequisites: [Node.js](https://nodejs.org/en/) (>=10), npm version 3+.
+Prerequisites: [Node.js](https://nodejs.org/en/) (>=12), npm version 7+.
 
 ```bash
 npm install
