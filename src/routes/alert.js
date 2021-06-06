@@ -39,7 +39,7 @@ function buildAlertRouter(kafkaProducer) {
     /*
      * Pass alert to the message broker (kafka)
      */
-    // TODO: garantieren, dass der producer ready ist (producer.on('ready', ..))
+    // FIXME: guarantee that producer is ready (producer.on('ready', ..))
     kafkaProducer.send([
         {
             messages: req.body.xml, 
