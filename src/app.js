@@ -1,7 +1,6 @@
 
 const express = require('express');
 const noCache = require('nocache');
-const http = require('http');
 const requestLogger = require('morgan');
 const ConfigurationService = require('./services/configuration.service');
 const kafka = require('kafka-node');
@@ -29,8 +28,7 @@ function buildConfig(defaultConfig, env) {
   return configurationService.loadConfiguration();
 }
 
-// eslint-disable-next-line max-statements
-function startApp() {
+function initApp() {
   const config = buildConfig(defaults, environment);
 
   const app = express();
@@ -38,12 +36,6 @@ function startApp() {
   app.use(helmet());
   app.use(noCache());
   app.use(cors());
-
-  const server = http.Server(app);
-
-  server.listen(config.PORT, () => {
-    console.log('listening on *:' + config.PORT);
-  });
 
   app.use(requestLogger('dev'));
 
@@ -53,9 +45,17 @@ function startApp() {
   app.use('/api/v1/alerts', alertRouterFactory(kafkaProducer));
   app.use('/health', healthRouterFactory());
 
-  return app;
+  return { app, config };
+}
+
+function startApp() {
+  const { app, config } = initApp();
+  app.listen(config.PORT, () => {
+    console.log('listening on *:' + config.PORT);
+  });
 }
 
 module.exports = {
-  start: startApp
+  start: startApp,
+  init: initApp
 }
