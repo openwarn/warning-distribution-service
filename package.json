@@ -20,20 +20,20 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/warnsystem/warning-distribution-service#readme",
   "dependencies": {
-    "body-parser": "^1.18.3",
     "cors": "^2.8.5",
-    "express": "^4.16.4",
-    "helmet": "^3.15.0",
-    "kafka-node": "^4.0.0",
-    "moment": "^2.24.0",
-    "morgan": "^1.9.1",
-    "rxjs": "^6.4.0",
-    "statuses": "^1.5.0",
+    "express": "^4.17.1",
+    "helmet": "^4.6.0",
+    "kafka-node": "^5.0.0",
+    "moment": "^2.29.1",
+    "morgan": "^1.10.0",
+    "nocache": "^3.0.0",
+    "rxjs": "^7.1.0",
+    "statuses": "^2.0.1",
     "xml-js": "^1.6.11"
   },
   "devDependencies": {
-    "eslint": "^5.12.1",
-    "jasmine": "^3.3.1",
-    "supertest": "^3.4.2"
+    "eslint": "^7.28.0",
+    "jasmine": "^3.7.0",
+    "supertest": "^6.1.3"
   }
 }

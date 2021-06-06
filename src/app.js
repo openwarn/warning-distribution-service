@@ -1,6 +1,6 @@
 
 const express = require('express');
-const bodyParser = require('body-parser');
+const noCache = require('nocache');
 const http = require('http');
 const requestLogger = require('morgan');
 const ConfigurationService = require('./services/configuration.service');
@@ -34,11 +34,9 @@ function startApp() {
   const config = buildConfig(defaults, environment);
 
   const app = express();
-  app.use(bodyParser.json({
-    limit: config.MAX_XML_SIZE
-  }));
+  app.use(express.json({ limit: config.MAX_XML_SIZE }))
   app.use(helmet());
-  app.use(helmet.noCache());
+  app.use(noCache());
   app.use(cors());
 
   const server = http.Server(app);
